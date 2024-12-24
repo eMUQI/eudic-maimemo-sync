@@ -11,18 +11,30 @@
 
 ## 配置
 
-1. 复制 `.env.example` 为 `.env`
-2. 填写以下必需的环境变量：
-   - `EUDIC_API_KEY`：欧路词典 API 密钥
-   - `EUDIC_CATEFORY_ID`：欧路词典生词本 ID
-   - `MOMO_API_KEY`：墨墨背单词 API 密钥
-   - `MOMO_NOTEPAD_ID`：墨墨背单词云词库 ID
-
-## 安装依赖
+### 1. 安装依赖
 
 ```bash
 pip install -r requirements.txt
 ```
+
+### 2. 获取欧路词典 API 密钥
+
+获取API密钥：https://my.eudic.net/OpenAPI/Authorization
+
+
+### 3. 获取墨墨背单词 API 密钥
+
+获取API密钥：墨墨背单词APP 我的 - 更多设置 - 实验功能 - 开放API
+
+### 4. 添加环境变量
+
+a. 复制 `.env.example` 为 `.env`
+
+b. 填写以下必需的环境变量：
+   - `EUDIC_API_KEY`：欧路词典 API 密钥
+   - `EUDIC_CATEFORY_ID`：一般为0。你也可以在填写密钥后，通过运行 **get_wordbook_id.py** 获取。
+   - `MOMO_API_KEY`：墨墨背单词 API 密钥
+   - `MOMO_NOTEPAD_ID`：在填写密钥后，运行 **get_notepad_id.py** 获取。
 
 ## 使用方法
 
@@ -33,6 +45,6 @@ python sync.py
 
 ## 路线图
 
-- [ ] 更详细的教程
+- [x] 更详细的教程
 - [ ] 完善异常处理
 - [ ] 支持 docker
