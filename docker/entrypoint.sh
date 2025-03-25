@@ -5,7 +5,7 @@ set -e
 service cron start
 
 # Execute script once at container startup (optional)
-python /app/sycn.py
+python /app/sync.py
 
 # Keep container running
 tail -f /dev/null
