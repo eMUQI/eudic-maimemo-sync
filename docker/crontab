@@ -1,5 +1,5 @@
 # Run sync task every day at 3 AM
-0 3 * * * python /app/sync.py >> /var/log/cron.log 2>&1
+0 3 * * * /usr/local/bin/python /app/sync.py >> /var/log/cron.log 2>&1
 
 # Keep cron log record
 * * * * * echo "cron service is running" >> /var/log/cron.log 2>&1
