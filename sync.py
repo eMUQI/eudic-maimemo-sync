@@ -2,6 +2,7 @@ import os
 import requests
 from collections import defaultdict
 from dotenv import load_dotenv
+from datetime import datetime, timezone, timedelta
 
 def fetch_word_list():
     """获取欧路词典生词本"""
@@ -24,13 +25,22 @@ def fetch_word_list():
         return None
 
 def generate_word_output(word_data):
-    """生成按日期分组的单词字符串"""
+    """生成按日期分组的单词字符串，并将UTC时间转换为中国时间"""
     if not word_data or 'data' not in word_data:
         return ""
 
+    # 中国时区 (UTC+8)
+    china_tz = timezone(timedelta(hours=8))
+    
     grouped_words = defaultdict(list)
     for item in word_data['data']:
-        date = item["add_time"].split("T")[0]
+        # 解析UTC时间
+        utc_time = datetime.fromisoformat(item["add_time"].replace('Z', '+00:00'))
+        # 转换为中国时间
+        china_time = utc_time.astimezone(china_tz)
+        # 获取中国时区的日期
+        date = china_time.strftime("%Y-%m-%d")
+        
         grouped_words[date].append(item["word"])
 
     output_string = ""
@@ -38,6 +48,8 @@ def generate_word_output(word_data):
         output_string += f"#{date}\n"
         output_string += "\n".join(grouped_words[date])
         output_string += "\n"
+
+    return output_string
 
     return output_string
 
