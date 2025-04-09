@@ -1,0 +1,19 @@
+services:
+  eudic-maimemo-sync:
+    image: ghcr.io/emuqi/eudic-maimemo-sync:latest
+    container_name: eudic-maimemo-sync
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/var/log
+      - ./words_data.txt:/app/words_data.txt
+      #- ./my-crontab:/etc/cron.d/app-cron
+    environment:
+      - TZ=Asia/Shanghai
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep cron || exit 1"]
+      interval: 2m
+      timeout: 5s
+      retries: 3
+      start_period: 10s
