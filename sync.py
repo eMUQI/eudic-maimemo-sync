@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 from collections import defaultdict
 from dotenv import load_dotenv
 from datetime import datetime, timezone, timedelta
@@ -21,7 +22,7 @@ def fetch_word_list():
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
-        print(f"获取单词列表失败: {e}")
+        print(f"[ERROR] 获取单词列表失败: {e}")
         return None
 
 def generate_word_output(word_data):
@@ -48,8 +49,6 @@ def generate_word_output(word_data):
         output_string += f"#{date}\n"
         output_string += "\n".join(grouped_words[date])
         output_string += "\n"
-
-    return output_string
 
     return output_string
 
@@ -92,15 +91,49 @@ def update_maimemo_notepad(content):
         
         return response.json()
     except requests.RequestException as e:
-        print(f"更新墨墨生词本失败: {e}")
+        print(f"[ERROR] 更新墨墨生词本失败: {e}")
         return None
 
+def save_words_to_file(word_data, filename="words_data.txt"):
+    """将单词列表保存到文件中"""
+    try:
+        with open(filename, "w", encoding="utf-8") as file:
+            file.write(generate_word_output(word_data))
+        return True
+    except Exception as e:
+        print(f"[ERROR] 保存单词列表到文件失败: {e}")
+        return False
+
 def main():
+    start_time = datetime.now()
+    print(f"[INFO] 开始同步 - {start_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    
+    # 获取欧路单词
+    print("[INFO] 正在获取欧路词典单词...")
     word_data = fetch_word_list()
+    
     if word_data:
+        # 保存单词列表到文件
+        word_count = len(word_data.get('data', []))
+        print(f"[INFO] 获取到 {word_count} 个单词，正在保存到本地文件...")
+        save_words_to_file(word_data)
+        
+        # 生成输出并同步到墨墨
         output_string = generate_word_output(word_data)
-        update_maimemo_notepad(output_string)
-        print(output_string)
+        print("[INFO] 正在同步到墨墨背单词...")
+        response = update_maimemo_notepad(output_string)
+        
+        if response and response.get('success'):
+            print("[SUCCESS] 同步完成!")
+        else:
+            print("[ERROR] 同步失败!")
+    else:
+        print("[ERROR] 未获取到欧路词典单词，同步终止")
+    
+    end_time = datetime.now()
+    duration = (end_time - start_time).total_seconds()
+    print(f"[INFO] 同步结束 - {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
+    print(f"[INFO] 总耗时: {duration:.2f} 秒")
 
 if __name__ == "__main__":
     main()
