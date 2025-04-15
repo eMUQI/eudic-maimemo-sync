@@ -5,12 +5,12 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    volumes:
-      - ./logs:/var/log
-      - ./words_data.txt:/app/words_data.txt
-      #- ./my-crontab:/etc/cron.d/app-cron
+    # volumes:
+    #   - ./words_data.txt:/app/words_data.txt # Keep if needed
     environment:
       - TZ=Asia/Shanghai
+      - CRON_SCHEDULE=0 18 * * * # Example: Customize schedule to 6 PM daily
+      # Ensure all necessary variables (EUDIC_API_KEY etc.) are in .env or here
     healthcheck:
       test: ["CMD-SHELL", "pgrep cron || exit 1"]
       interval: 2m
