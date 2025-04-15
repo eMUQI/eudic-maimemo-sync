@@ -4,7 +4,7 @@ set -e
 # --- Environment Setup ---
 echo "Exporting environment variables for cron..."
 # Create file with selected env vars for cron job to source
-printenv | grep -E 'EUDIC_API_KEY|MOMO_API_KEY|MOMO_NOTEPAD_ID|EUDIC_CATEFORY_ID|TZ|PATH|PYTHONPATH' | sed 's/^\(.*\)$/export \1/g' > /app/environment.env
+printenv | grep -E 'EUDIC_API_KEY|MOMO_API_KEY|MOMO_NOTEPAD_ID|EUDIC_CATEFORY_ID|TZ|PATH|PYTHONPATH' | sed 's/^\([^=]*\)=\(.*\)$/export \1="\2"/g' > /app/environment.env
 # Add python path to PATH
 echo "export PATH=$PATH:/usr/local/bin" >> /app/environment.env
 # Secure environment file
