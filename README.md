@@ -32,7 +32,7 @@ a. 复制 `.env.example` 为 `.env`
 
 b. 填写以下必需的环境变量：
    - `EUDIC_API_KEY`：欧路词典 API 密钥
-   - `EUDIC_CATEFORY_ID`：一般为0。你也可以在填写密钥后，通过运行 **get_wordbook_id.py** 获取。
+   - `EUDIC_CATEGORY_ID`：一般为0。你也可以在填写密钥后，通过运行 **get_wordbook_id.py** 获取。
    - `MOMO_API_KEY`：墨墨背单词 API 密钥
    - `MOMO_NOTEPAD_ID`：在填写密钥后，运行 **get_notepad_id.py** 获取。
 

@@ -15,7 +15,7 @@ def fetch_word_list():
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
     }
     
-    url = "https://api.frdic.com/api/open/v1/studylist/words/{id}".format(id=os.getenv("EUDIC_CATEFORY_ID"))
+    url = "https://api.frdic.com/api/open/v1/studylist/words/{id}".format(id=os.getenv("EUDIC_CATEGORY_ID"))
 
     try:
         response = requests.get(url, headers=headers, params={"language": "en"})
