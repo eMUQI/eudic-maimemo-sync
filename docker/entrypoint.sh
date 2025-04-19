@@ -16,7 +16,7 @@ CRON_SCHEDULE=${CRON_SCHEDULE:-"0 18 * * *"} # Default: 6:00 PM daily
 echo "Generating crontab file with schedule: $CRON_SCHEDULE"
 
 # Create crontab file
-echo "$CRON_SCHEDULE . /app/environment.env; /usr/local/bin/python /app/sync.py >> /proc/1/fd/1 2>&1" > /etc/cron.d/app-cron
+echo "$CRON_SCHEDULE root . /app/environment.env; /usr/local/bin/python /app/sync.py >> /proc/1/fd/1 2>&1" > /etc/cron.d/app-cron
 # Add trailing newline (required by cron)
 echo "" >> /etc/cron.d/app-cron
 
