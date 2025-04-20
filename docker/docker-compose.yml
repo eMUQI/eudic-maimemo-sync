@@ -1,3 +1,4 @@
+# docker/docker-compose.yml
 services:
   eudic-maimemo-sync:
     image: ghcr.io/emuqi/eudic-maimemo-sync:latest
@@ -9,11 +10,16 @@ services:
     #   - ./words_data.txt:/app/words_data.txt # Keep if needed
     environment:
       - TZ=Asia/Shanghai
-      - CRON_SCHEDULE=0 18 * * * # Example: Customize schedule to 6 PM daily
+      - RUN_ON_STARTUP=true # Add this to run the sync when the container starts
+      # Example: Run every hour at minute 0
+      - CRON_SCHEDULE=0 * * * *
+      # Example: Run daily at 3:15 AM
+      # - CRON_SCHEDULE=15 3 * * *
       # Ensure all necessary variables (EUDIC_API_KEY etc.) are in .env or here
     healthcheck:
-      test: ["CMD-SHELL", "pgrep cron || exit 1"]
+      # Test if the supercronic process is running
+      test: ["CMD-SHELL", "pgrep supercronic || exit 1"]
       interval: 2m
       timeout: 5s
       retries: 3
-      start_period: 10s
+      start_period: 10s # Give supercronic time to start
